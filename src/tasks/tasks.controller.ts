@@ -23,29 +23,26 @@ export class TasksController {
         return this.tasksService.createTask(createTaskDto);
     }
 
-    // @Delete(":id")
-    // public deleteTaskById(@Param() params): void {
-    //     return this.tasksService.deleteTaskById(params.id);
-    // }
+    @Delete(":id")
+    public deleteTaskById(@Param() params): Promise<void> {
+        return this.tasksService.deleteTaskById(params.id);
+    }
 
-    // @Get()
-    // public getTasks(@Query() filterDto: GetTasksFilterDto): Task[] {
-    //     if (Object.keys(filterDto).length) {
-    //         return this.tasksService.getTasksWithFilter(filterDto);
-    //     }
-    //     return this.tasksService.getAllTasks();
-    // }
+    @Get()
+    public getTasks(@Query() filterDto: GetTasksFilterDto): Promise<Task[]> {
+        return this.tasksService.getTasks(filterDto);
+    }
 
     @Get(":id")
     public getTaskById(@Param() params): Promise<Task> {
         return this.tasksService.getTaskById(params.id);
     }
 
-    // @Patch(":id")
-    // public updateTaskById(
-    //     @Body() updateTaskDto: UpdateTaskDto,
-    //     @Param() params,
-    // ): Task {
-    //     return this.tasksService.updateTaskById(updateTaskDto, params.id);
-    // }
+    @Patch(":id")
+    public updateTaskById(
+        @Body() updateTaskDto: UpdateTaskDto,
+        @Param() params,
+    ): Promise<Task> {
+        return this.tasksService.updateTaskById(updateTaskDto, params.id);
+    }
 }

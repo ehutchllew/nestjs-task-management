@@ -26,17 +26,16 @@ export class TasksService {
         return task;
     }
 
-    // public deleteTaskById(id: string): void {
-    //     const foundTask: Task = this.getTaskById(id);
-    //     this.tasks = this.tasks.filter((task) => task.id !== foundTask.id);
-    // }
+    public async deleteTaskById(id: string): Promise<void> {
+        const result = await this.tasksRepository.delete(id);
 
-    // public getAllTasks(): Task[] {
-    //     return this.tasks;
-    // }
+        if (!result.affected) {
+            throw new NotFoundException(`Task with ID: "${id}" not found`);
+        }
+    }
 
     public async getTaskById(id: string): Promise<Task> {
-        const foundTask = await this.tasksRepository.findOne({ id });
+        const foundTask: Task = await this.tasksRepository.findOne({ id });
         if (!foundTask) {
             throw new NotFoundException(`Task with ID: "${id}" not found`);
         }
@@ -44,28 +43,16 @@ export class TasksService {
         return foundTask;
     }
 
-    // public getTasksWithFilter(filterDto: GetTasksFilterDto): Task[] {
-    //     const { search, status } = filterDto;
-    //     let tasks: Task[] = this.getAllTasks();
+    public getTasks(filterDto: GetTasksFilterDto): Promise<Task[]> {
+        return this.tasksRepository.getTasks(filterDto);
+    }
 
-    //     if (status) {
-    //         tasks = tasks.filter((task) => task.status === status);
-    //     }
-
-    //     if (search) {
-    //         tasks = tasks.filter(
-    //             (task) =>
-    //                 task.title.includes(search) ||
-    //                 task.description.includes(search),
-    //         );
-    //     }
-
-    //     return tasks;
-    // }
-
-    // public updateTaskById(updateTaskDto: UpdateTaskDto, id: string): Task {
-    //     let foundTask: Task = this.getTaskById(id);
-    //     foundTask = Object.assign(foundTask, updateTaskDto);
-    //     return foundTask;
-    // }
+    public async updateTaskById(
+        updateTaskDto: UpdateTaskDto,
+        id: string,
+    ): Promise<Task> {
+        const foundTask: Task = await this.getTaskById(id);
+        await this.tasksRepository.update(foundTask.id, updateTaskDto);
+        return { ...foundTask, ...updateTaskDto };
+    }
 }
