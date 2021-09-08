@@ -1,5 +1,6 @@
 import { IsEnum } from "class-validator";
-import { Task, TaskStatus } from "../task.model";
+import { Task } from "../task.entity";
+import { TaskStatus } from "../tasks.types";
 
 export class UpdateTaskDto implements Partial<Task> {
     description?: string;
