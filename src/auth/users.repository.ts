@@ -18,15 +18,6 @@ export class UsersRepository extends Repository<User> {
         const hashedPassword = await bcrypt.hash(password, salt);
         const user = this.create({ username, password: hashedPassword });
 
-        try {
-            await this.save(user);
-        } catch (e) {
-            if (e.code === "23505") {
-                // DUPE USERNAME
-                throw new ConflictException("Username already exists");
-            } else {
-                throw new InternalServerErrorException();
-            }
-        }
+        await this.save(user);
     }
 }

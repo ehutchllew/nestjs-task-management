@@ -2,7 +2,6 @@ import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { TasksModule } from "./tasks/tasks.module";
 import { AuthModule } from "./auth/auth.module";
-import { ErrorHandlerModule } from "./shared/errors/errorHandler";
 
 @Module({
     imports: [
@@ -18,7 +17,6 @@ import { ErrorHandlerModule } from "./shared/errors/errorHandler";
             synchronize: true,
         }),
         AuthModule,
-        ErrorHandlerModule,
     ],
     controllers: [],
     providers: [],
